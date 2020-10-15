@@ -2,3 +2,5 @@
 .web-scraping
 .DS_STORE
 .vscode
+__init__.py
+__pycache__
