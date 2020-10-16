@@ -1,6 +1,7 @@
-from scraper import SatelliteScraper
+from methods import SatelliteScraper
 
 if __name__ == '__main__':
 
     scraper = SatelliteScraper()
-    scraper.scrap()
+    scraper.scraper()
+    scraper.save_data_csv()
