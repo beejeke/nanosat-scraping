@@ -136,15 +136,15 @@ class SatelliteScraper:
 
         cnt = 0
         for i, name in zip(range(nanosats_n), tqdm(nanosats_names, total=nanosats_n)):
-            tqdm.write("==> Adding nanosatellite name to his link: " + self.url + '/sat' + name)
+            tqdm.write("==> Adding nanosatellite name to his link: " + f'{W}{self.url}' + '/sat' + f'{name}{NC}')
             html = self.get_html(self.url + '/sat' + name)
             time.sleep(random.randint(0, 3))
             hdrs_ = self.get_headers(html)
 
             if self.headers == [hdrs_]:
-                tqdm.write(f'==> {G}Scraping data{NC} for ' + name + ' nanosatellite...\n')
+                tqdm.write(f'==> {G}Scraping data{NC} for ' + name + ' nanosatellite...')
                 self.data_scraper(html)
-                tqdm.write(f'==> {G}Data scraped:{NC} {self.data[cnt]}\n')
+                tqdm.write(f'==> {G}Data scraped:{NC} {W}{self.data[cnt]}{NC}\n')
                 cnt += 1
             else:
                 tqdm.write(f'{B}[INFO]{NC} Invalid headers, discarding data [...]\n')
@@ -155,4 +155,4 @@ class SatelliteScraper:
     def save_data_csv(self):
         self.df.to_csv(f'../datasets/nanosat_info-{nanosats_n}.csv', header=True, sep=';',
                        index=False, encoding='utf-8')
-        print(f'{G}Datos descargados con éxito:{NC}', '\n', f'{W}{self.df.head()}{NC}', '\n', f'{G}Guardados en:{NC} {W}/datasets{NC}')
+        print(f'{G}Datos descargados con éxito:{NC}', '\n', f'{W}{self.df.head()}{NC}', '\n', f'{G}Guardados en:{NC} {W}/datasets{NC}\n')
