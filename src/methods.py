@@ -54,9 +54,9 @@ class SatelliteScraper:
 
     def get_nanosats_database_links(self, html):
         """
-        Método para obtener la información detallada de cada nanosatélite mediante su link correspondiente
+        Método para obtener la información detallada de cada nanosatélite mediante su link correspondiente.
         :param html: Estructura HTML de la página previamente recogida.
-        :return:
+        :return: Lista con los links que contienen los datos de cada nanosatélite.
         """
         td_tags = html.find_all('td')
 
@@ -74,9 +74,9 @@ class SatelliteScraper:
 
     def get_nanosats_names_links(self, html):
         """
-        Método para obtener el nombre de cada nanosatélite mediante su link correspondiente
+        Método para obtener el nombre de cada nanosatélite mediante su link correspondiente.
         :param html: Estructura HTML de la página previamente recogida.
-        :return:
+        :return: Lista con los nombres de cada nanosatélite.
         """
         td_tags = html.find_all('td')
 
@@ -92,6 +92,11 @@ class SatelliteScraper:
         return nanosats_names
 
     def get_headers(self, html):
+        """
+        Método para obtener las cabeceras para el fichero CSV y determinar la estructura que deseamos.
+        :param html: Estructura HTML de la página previamente recogida.
+        :return: Lista con los nombres de las columnas que queremos tener en el dataset.
+        """
         b_tags = html.find_all('b')
 
         hdrs = []
@@ -100,6 +105,10 @@ class SatelliteScraper:
         return hdrs
 
     def data_scraper(self, html):
+        """
+        Método que obtiene los datos de cada nanosatélite.
+        :param html: Estructura HTML de la página previamente recogida.
+        """
         td_tags = html.find_all('td')
 
         extracted_data = []
@@ -108,24 +117,13 @@ class SatelliteScraper:
 
         self.data.append(extracted_data)
 
-    def scraper_test(self):
-        html = self.get_html(self.url + self.subdomain)
-
-        name_links = self.get_nanosats_names_links(html)
-        for name in tqdm(name_links):
-            html = self.get_html(self.url + '/sat' + name)
-            headers = self.get_headers(self.url + '/sat' + name)
-            headers.append(name)
-            self.data_scraper(html)
-            print(self.data)
-
     def scraper(self):
+        """
+        Método principal donde se ejecutarán los métodos desarrollados previamente para scrapear los datos.
+        """
         print("\n===> Web Scraping of nanosatellites launch missions data from " + "'" + self.url + "'... <===\n\n")
 
-        # 1. Download HTML
         html = self.get_html(self.url + self.subdomain)
-
-        # 2. Get links for each name
         nanosats_names = self.get_nanosats_names_links(html)
 
         html = self.get_html(self.url + '/sat/tubsat-n')
