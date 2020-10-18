@@ -154,5 +154,5 @@ class SatelliteScraper:
 
     def save_data_csv(self):
         self.df.to_csv(f'../datasets/nanosat_info-{nanosats_n}.csv', header=True, sep=';',
-                       index=False, encoding='utf-8')
+                       index=False, quotechar='"', encoding='utf-8')
         print(f'{G}Datos descargados con éxito:{NC}', '\n', f'{W}{self.df.head()}{NC}', '\n', f'{G}Guardados en:{NC} {W}/datasets{NC}\n')
