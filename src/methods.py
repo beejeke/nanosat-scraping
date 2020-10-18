@@ -10,7 +10,7 @@
         * Guzmán Manuel Gómez Pérez <@GGP00>
 
     ==> Fichero
-        * src/scrapper.py
+        * src/methods.py
 
     ==> Descripción
         Fichero principal donde se desarrollan los métodos necesarios para
