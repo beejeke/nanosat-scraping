@@ -19,7 +19,6 @@
 
 import click
 from .methods import SatelliteScraper
-import sys
 
 
 @click.group()
@@ -32,7 +31,6 @@ def get_total_nanosats():
 
     html = scraper_.get_html('https://www.nanosats.eu/database')
     nanosats_names = scraper_.get_nanosats_names_links(html)
-
     total = len(nanosats_names)
 
     return total
@@ -40,13 +38,11 @@ def get_total_nanosats():
 
 @cli.command(help='Ejecuta el scraper para obtener datos de los nanosatélites analizados.')
 @click.option('--number', '-n', 'nanosats_n', default=get_total_nanosats(), show_default=True)
-def scrape(nanosats_n):
-    sat_status = sys.argv[1]
-    if sat_status not in {'launched', 'cancelled', 'expected'}:
-        raise ValueError("Please, specify an status as: launched, cancelled or expected.")
+@click.option('--status', '-s', 'status', default='launched', show_default=True)
+def scrape(nanosats_n, status):
     scraper = SatelliteScraper()
-    scraper.scraper(int(nanosats_n), status=sat_status)
-    scraper.save_data_csv(nanosats_n, status=sat_status)
+    scraper.scraper(int(nanosats_n), status)
+    scraper.save_data_csv(nanosats_n, status)
 
 
 if __name__ == '__main__':
