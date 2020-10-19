@@ -56,26 +56,6 @@ class SatelliteScraper:
 
         return html
 
-    def get_nanosats_database_links(self, html):
-        """
-        Método para obtener la información detallada de cada nanosatélite mediante su link correspondiente.
-        :param html: Estructura HTML de la página previamente recogida.
-        :return: Lista con los links que contienen los datos de cada nanosatélite.
-        """
-        td_tags = html.find_all('td')
-
-        nanosats_links = []
-        for td in td_tags:
-            a = td.next_element
-            if a.name == 'a':
-                href = a['href']
-                if re.match('sat', href):
-                    nanosats_links.append(href)
-
-        print(nanosats_links)
-
-        return nanosats_links
-
     def get_nanosats_names_links(self, html):
         """
         Método para obtener el nombre de cada nanosatélite mediante su link correspondiente.
@@ -163,7 +143,7 @@ class SatelliteScraper:
             else:
                 tqdm.write(f'{B}[INFO]{NC} Invalid headers, discarding data [...]\n')
 
-        self.df = pd.DataFrame(self.data, columns=[*self.headers[0],'Images'])
+        self.df = pd.DataFrame(self.data, columns=[*self.headers[0], 'Images'])
         self.df = self.df.drop(labels='Sources', axis=1)
 
     def save_data_csv(self):
