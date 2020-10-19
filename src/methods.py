@@ -34,7 +34,7 @@ W = '\033[1;37m'
 NC = '\033[0m'
 
 nanosats_n = int(input(f"\n{Y}Input the number of nanosats do you want to scrape{NC} {W}[1-2780]{NC}: "))
-
+HEADER_SAT = {'launched': 'tubsat-n', 'expected': 'grbalpha' , 'cancelled': '3-star'}
 
 class SatelliteScraper:
 
@@ -131,7 +131,7 @@ class SatelliteScraper:
 
         self.data.append(extracted_data)
 
-    def scraper(self):
+    def scraper(self,status = 'launched'):
         """
         Método principal donde se ejecutarán los métodos desarrollados previamente para scrapear los datos.
         """
@@ -141,7 +141,7 @@ class SatelliteScraper:
         html = self.get_html(self.url + self.subdomain)
         nanosats_names = self.get_nanosats_names_links(html)
 
-        html = self.get_html(self.url + '/sat/tubsat-n')
+        html = self.get_html(self.url + f'/sat/{HEADER_SAT[status]}')
         self.headers.append(self.get_headers(html))
 
         cnt = 0
@@ -162,7 +162,7 @@ class SatelliteScraper:
         self.df = pd.DataFrame(self.data, columns=[*self.headers[0],'Images'])
         self.df = self.df.drop(labels='Sources', axis=1)
 
-    def save_data_csv(self):
-        self.df.to_csv(f'../datasets/nanosat_info-{nanosats_n}.csv', header=True, sep=';',
+    def save_data_csv(self,status = 'launched'):
+        self.df.to_csv(f'../datasets/nanosat_info-{nanosats_n}_{status}.csv', header=True, sep=';',
                        index=False, quoting=csv.QUOTE_NONE, escapechar=' ', encoding='utf-8')
         print(f'{G}Datos descargados con éxito:{NC}', '\n', f'{W}{self.df.head()}{NC}', '\n', f'{G}Guardados en:{NC} {W}/datasets{NC}\n')

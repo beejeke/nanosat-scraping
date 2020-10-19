@@ -17,9 +17,13 @@
 """
 
 from methods import SatelliteScraper
+import sys
 
 if __name__ == '__main__':
 
+    sat_status = sys.argv[1]
+    if sat_status not in {'launched', 'cancelled', 'expected'}:
+        raise ValueError("Please, specify an status as: launched, cancelled or expected.")
     scraper = SatelliteScraper()
-    scraper.scraper()
-    scraper.save_data_csv()
+    scraper.scraper(status=sat_status) 
+    scraper.save_data_csv(status=sat_status)
