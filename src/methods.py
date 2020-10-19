@@ -35,7 +35,7 @@ W = '\033[1;37m'
 NC = '\033[0m'
 
 
-HEADER_SAT = {'launched': 'tubsat-n', 'expected': 'grbalpha', 'cancelled': '3-star'}
+HEADER_SAT = {'launched': 'tubsat-n', 'not-launched': 'grbalpha'}
 
 
 class SatelliteScraper:
