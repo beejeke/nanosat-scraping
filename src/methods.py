@@ -17,12 +17,13 @@
         la extracción de datos a partir de un sitio web.
 """
 
-import requests
-import re
-import pandas as pd
-import time
-import random
 import csv
+import random
+import re
+import requests
+import time
+import pandas as pd
+
 from bs4 import BeautifulSoup
 from tqdm import tqdm
 
@@ -33,7 +34,7 @@ P = '\033[1;35m'
 W = '\033[1;37m'
 NC = '\033[0m'
 
-nanosats_n = int(input(f"\n{Y}Input the number of nanosats do you want to scrape{NC} {W}[1-2780]{NC}: "))
+# nanosats_n = int(input(f"\n{Y}Input the number of nanosats do you want to scrape{NC} {W}[1-2780]{NC}: "))
 
 
 class SatelliteScraper:
@@ -111,21 +112,26 @@ class SatelliteScraper:
 
         self.data.append(extracted_data)
 
-    def scraper(self):
+    def scraper(self, nanosats_n):
         """
         Método principal donde se ejecutarán los métodos desarrollados previamente para scrapear los datos.
         """
         print(f"\n===> 🚀 {P}Web Scraping of nanosatellites launch missions data from{NC} " + "'" +
-              f'{B}{self.url}{NC}' + f"' 🚀 <===\n\n")
+              f'{B}{self.url}{NC}' + f"' 🚀 <===\n")
 
         html = self.get_html(self.url + self.subdomain)
         nanosats_names = self.get_nanosats_names_links(html)
+
+        # Number of nanosats to scrape passed by CLI ==> (src/main.py)
+        nanosats_number = [nanosats_names[nano_number] for nano_number in range(nanosats_n)]
+
+        print(f"===> {W}Number of nanosats to scrape: {Y}{len(nanosats_number)}/{len(nanosats_names)}{NC}\n")
 
         html = self.get_html(self.url + '/sat/tubsat-n')
         self.headers.append(self.get_headers(html))
 
         cnt = 0
-        for i, name in zip(range(nanosats_n), tqdm(nanosats_names, total=nanosats_n)):
+        for i, name in zip(nanosats_number, tqdm(nanosats_number)):
             tqdm.write("==> Adding nanosatellite name to his link: " + f'{W}{self.url}' + '/sat' + f'{name}{NC}')
             html = self.get_html(self.url + '/sat' + name)
             time.sleep(random.randint(0, 3))
@@ -142,7 +148,8 @@ class SatelliteScraper:
         self.df = pd.DataFrame(self.data, columns=[*self.headers[0], 'Images'])
         self.df = self.df.drop(labels='Sources', axis=1)
 
-    def save_data_csv(self):
+    def save_data_csv(self, nanosats_n):
         self.df.to_csv(f'../datasets/nanosat_info-{nanosats_n}.csv', header=True, sep=';',
                        index=False, quoting=csv.QUOTE_NONE, escapechar=' ', encoding='utf-8')
-        print(f'{G}Datos descargados con éxito:{NC}', '\n', f'{W}{self.df.head()}{NC}', '\n', f'{G}Guardados en:{NC} {W}/datasets{NC}\n')
+        print(f'{G}Datos descargados con éxito:{NC}', '\n', f'{W}{self.df.head()}{NC}',
+              '\n', f'{G}Guardados en:{NC} {W}/datasets{NC}\n')

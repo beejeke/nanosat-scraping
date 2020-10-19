@@ -1,6 +1,7 @@
-.idea
+*.idea
 .web-scraping
 .DS_STORE
 .vscode
-__init__.py
-__pycache__
+*__init__.py
+*__pycache__
+*web_scraping.egg-info
