@@ -102,11 +102,7 @@ class SatelliteScraper:
         :return: Lista con los enlaces de las imagenes de cada nanosatélite.
         """
         img_tags = html.findAll("a", {"class": "fancybox-1"})
-        imgs = []
-        for img in img_tags:
-            imgs.append(img['href'])
-        print(imgs)
-        return imgs
+        return [img['href'] for img in img_tags]
 
     def get_headers(self, html):
         """
