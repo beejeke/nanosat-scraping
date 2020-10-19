@@ -94,6 +94,19 @@ class SatelliteScraper:
 
         return nanosats_names
 
+    def get_nanosats_images_links(self, html):
+        """
+        Método para obtener las imagenes de cada nanosatélite mediante su link correspondiente.
+        :param html: Estructura HTML de la página previamente recogida.
+        :return: Lista con los enlaces de las imagenes de cada nanosatélite.
+        """
+        img_tags = html.findAll("a", {"class": "fancybox-1"})
+        imgs = []
+        for img in img_tags:
+            imgs.append(img['href'])
+        print(imgs)
+        return imgs
+
     def get_headers(self, html):
         """
         Método para obtener las cabeceras para el fichero CSV y determinar la estructura que deseamos.
@@ -117,6 +130,7 @@ class SatelliteScraper:
         extracted_data = []
         for td in td_tags:
             extracted_data.append(td.text)
+        extracted_data.append(self.get_nanosats_images_links(html))
 
         self.data.append(extracted_data)
 
@@ -131,8 +145,7 @@ class SatelliteScraper:
         nanosats_names = self.get_nanosats_names_links(html)
 
         html = self.get_html(self.url + '/sat/tubsat-n')
-        hdrs = self.get_headers(html)
-        self.headers.append(hdrs)
+        self.headers.append(self.get_headers(html))
 
         cnt = 0
         for i, name in zip(range(nanosats_n), tqdm(nanosats_names, total=nanosats_n)):
@@ -149,7 +162,7 @@ class SatelliteScraper:
             else:
                 tqdm.write(f'{B}[INFO]{NC} Invalid headers, discarding data [...]\n')
 
-        self.df = pd.DataFrame(self.data, columns=self.headers)
+        self.df = pd.DataFrame(self.data, columns=[*self.headers[0],'Images'])
         self.df = self.df.drop(labels='Sources', axis=1)
 
     def save_data_csv(self):
