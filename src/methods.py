@@ -17,12 +17,13 @@
         la extracción de datos a partir de un sitio web.
 """
 
-from bs4 import BeautifulSoup
 import requests
 import re
 import pandas as pd
 import time
 import random
+import csv
+from bs4 import BeautifulSoup
 from tqdm import tqdm
 
 Y = '\033[1;33m'
@@ -167,5 +168,5 @@ class SatelliteScraper:
 
     def save_data_csv(self):
         self.df.to_csv(f'../datasets/nanosat_info-{nanosats_n}.csv', header=True, sep=';',
-                       index=False, quotechar='"', encoding='utf-8')
+                       index=False, quoting=csv.QUOTE_NONE, escapechar=' ', encoding='utf-8')
         print(f'{G}Datos descargados con éxito:{NC}', '\n', f'{W}{self.df.head()}{NC}', '\n', f'{G}Guardados en:{NC} {W}/datasets{NC}\n')
