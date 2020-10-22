@@ -38,7 +38,7 @@ def get_total_nanosats():
 
 @cli.command(help='Ejecuta el scraper para obtener datos de los nanosatélites analizados.')
 @click.option('--number', '-n', 'nanosats_n', default=get_total_nanosats(), show_default=True)
-@click.option('--status', '-s', 'status', default='launched', show_default=True)
+@click.option('--status', '-s', 'status', default='all', show_default=True)
 def scrape(nanosats_n, status):
     scraper = SatelliteScraper()
     scraper.scraper(int(nanosats_n), status)

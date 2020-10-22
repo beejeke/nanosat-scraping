@@ -34,8 +34,7 @@ P = '\033[1;35m'
 W = '\033[1;37m'
 NC = '\033[0m'
 
-
-HEADER_SAT = {'launched': 'tubsat-n', 'not-launched': 'grbalpha'}
+HEADER_SAT = {'all': 'deorbitsail', 'launched': 'tubsat-n', 'not-launched': 'grbalpha'}
 
 
 class SatelliteScraper:
@@ -113,6 +112,33 @@ class SatelliteScraper:
 
         self.data.append(extracted_data)
 
+    def data_scraper_all(self, html):
+        """
+        Método que obtiene los datos de cada nanosatélite.
+        :param html: Estructura HTML de la página previamente recogida.
+        """
+        table = html.find('table', class_='tcomp')
+        td_tags = table.find_all(lambda tag: tag.name == 'td')
+
+        header = self.get_headers(table)
+
+        extracted_data = []
+        td_data = []
+
+        for td in td_tags:
+            td_data.append(td.text)
+
+        cnt = 0
+        for hdr in self.headers[0]:
+            if hdr in header:
+                extracted_data.append(td_data[cnt])
+                cnt += 1
+            else:
+                extracted_data.append('?')
+        extracted_data.append(self.get_nanosats_images_links(html))
+
+        self.data.append(extracted_data)
+
     def scraper(self, nanosats_n, status):
         """
         Método principal donde se ejecutarán los métodos desarrollados previamente para scrapear los datos.
@@ -126,7 +152,7 @@ class SatelliteScraper:
         # Number of nanosats to scrape passed by CLI ==> (src/main.py)
         nanosats_number = [nanosats_names[nano_number] for nano_number in range(nanosats_n)]
 
-        print(f"===> {W}Number of nanosats to scrape: {Y}{len(nanosats_number)}/{len(nanosats_names)}{NC}\n")
+        print(f"===> {W}Number of nanosats to scrape: {Y}{len(nanosats_number)}/{len(nanosats_names)}{NC}\n\n")
 
         html = self.get_html(self.url + f'/sat/{HEADER_SAT[status]}')
         self.headers.append(self.get_headers(html))
@@ -136,21 +162,27 @@ class SatelliteScraper:
             tqdm.write("==> Adding nanosatellite name to his link: " + f'{W}{self.url}' + '/sat' + f'{name}{NC}')
             html = self.get_html(self.url + '/sat' + name)
             time.sleep(random.randint(0, 3))
+
             hdrs_ = self.get_headers(html)
 
-            if self.headers == [hdrs_]:
+            if HEADER_SAT[status] == 'deorbitsail':
                 tqdm.write(f'==> {G}Scraping data{NC} for ' + name + ' nanosatellite...')
-                self.data_scraper(html)
-                tqdm.write(f'==> {G}Data scraped:{NC} {W}{self.data[cnt]}{NC}\n')
+                self.data_scraper_all(html)
+                tqdm.write(f'==> {G}Data scraped:{NC} {W}{self.data[cnt]}{NC}\n\n')
                 cnt += 1
             else:
-                tqdm.write(f'{B}[INFO]{NC} Invalid headers, discarding data [...]\n')
-
+                if self.headers == [hdrs_]:
+                    tqdm.write(f'==> {G}Scraping data{NC} for ' + name + ' nanosatellite...')
+                    self.data_scraper(html)
+                    tqdm.write(f'==> {G}Data scraped:{NC} {W}{self.data[cnt]}{NC}\n\n')
+                    cnt += 1
+                else:
+                    tqdm.write(f'{B}[INFO]{NC} Invalid headers, discarding data [...]\n')
         self.df = pd.DataFrame(self.data, columns=[*self.headers[0], 'Images'])
         self.df = self.df.drop(labels='Sources', axis=1)
 
     def save_data_csv(self, nanosats_n, status):
         self.df.to_csv(f'datasets/nanosat_info-{nanosats_n}_{status}.csv', header=True, sep=';',
                        index=False, quoting=csv.QUOTE_NONE, escapechar=' ', encoding='utf-8')
-        print(f'{G}Datos descargados con éxito:{NC}', '\n', f'{W}{self.df.head()}{NC}',
-              '\n', f'{G}Guardados en:{NC} {W}/datasets{NC}\n')
+        print(f'\n\n{G}Datos descargados con éxito:{NC}', '\n', f'{W}{self.df.head()}{NC}\n',
+              '\n', f'\n{G}Guardados en:{NC} {W}/datasets{NC}\n')
