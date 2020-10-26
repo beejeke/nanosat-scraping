@@ -1,4 +1,5 @@
-# Práctica 1: Web scraping
+# 🚀 Nanosat Scraper 🚀
+## Práctica 1: Web scraping
 ### Descripción
 Esta práctica ha sido desarrollada para la asignatura *Tipología y ciclo de vida de los datos*,
 perteneciente al Máster Universitario en Ciencia de Datos, por la *Universitat Oberta de Catalunya* [UOC](https://www.uoc.edu/portal/es/index.html).
