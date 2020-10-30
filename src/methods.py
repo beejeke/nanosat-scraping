@@ -139,7 +139,7 @@ class SatelliteScraper:
         for hdr in self.headers[0]:
             if hdr in self.hdrs_data:
                 ind = self.hdrs_data.index(hdr)
-                extracted_data.append(self.td_data[ind])
+                extracted_data.append(self.td_data[ind].rstrip().replace('"', ' '))
                 cnt += 1
             else:
                 extracted_data.append('?')
