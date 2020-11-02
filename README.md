@@ -14,6 +14,47 @@ El objetivo principal de dicha práctica es la aplicación de técnicas de [*web
 usando el lenguaje de programación **Python** para la extracción de datos de un sitio web y generar posteriormente
 un *dataset* con dicha información.
 
+### Uso de la herramienta
+Para poder hacer uso de la herramienta, hay que realizar una serie de pasos.
+*   Creamos un entorno virtual de Python y lo activamos.
+```
+python3 -m venv <nombre_env>
+```
+*   Instalamos las dependencias, tanto del ```requirements.txt``` como del ```setup.py```
+```
+pip install -r requirements.txt
+pip install -e .
+```
+*   Hacemos uso del CLI con el comando ```web-scraping```
+```
+# Por ejemplo, queremos obtener la información de todos los nanosatélites del sitio web
+# con variantes:
+
+$ web-scraping scrape
+$ web-scraping -a
+$ web-scraping --all
+```
+
+Además, podemos obtener los datos del número de nanosatélites que queramos.
+```
+# Por ejemplo, queremos obtener la información de los primeros 75 nanosatélites del sitio web
+# con variantes:
+
+$ web-scraping scrape -n 75
+$ web-scraping --number 75
+
+```
+
+O también, en función del estado de la misión que queremos obtener datos, podemos elegir entre ```launched```,
+```not-launched``` o ```all```
+
+```
+# Por ejemplo, queremos obtener la información de los primeros 850 nanosatélites del sitio web
+# pero que hayan sido lanzados con éxito:
+
+$ web-scraping scape -n 850 -s launched
+$ web-scraping scape -n 850 --status launched
+```
 ### Integrantes del equipo
 
 *   [Omar Mendo Mesa](https://github.com/beejeke)
