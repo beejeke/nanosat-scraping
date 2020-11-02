@@ -34,6 +34,15 @@ P = '\033[1;35m'
 W = '\033[1;37m'
 NC = '\033[0m'
 
+""" --- ACLARACIÓN ---
+
+El siguiente diccionario se ha desarrollado para obtener unas cabeceras concretas para el futuro dataset
+    - El nanosatélite 'deobitsail' tenía el mayor número de cabeceras útiles, por lo que se puede obtener
+      la totalidad de los datos para todos los nanosatélites.
+      
+Lo mismo ocurre con los otros dos casos, que nos darán otro tipo de cabeceras para scrapear los datos en cuestión.
+"""
+
 HEADER_SAT = {'all': 'deorbitsail', 'launched': 'tubsat-n', 'not-launched': 'grbalpha'}
 
 
@@ -128,8 +137,12 @@ class SatelliteScraper:
         for hdrs, td in zip(header, td_tags):
             data.append([hdrs, td.text])
 
+        # Creamos una lista de listas con las cabeceras y los datos de las etiquetas 'td'
         self.hdrs_data = [item[0] for item in data]
         self.td_data = [item[1] for item in data]
+
+        # Muchos nanosatélites no tienen cabecera 'Nation', si no 'Nation (HQ) y Nation (AIT), por lo que
+        # solo queremos conservar el valor de Nation (HQ) y llamarlo 'Nation'.
 
         if 'Nation (HQ)' in self.hdrs_data:
             self.hdrs_data = ['Nation' if 'Nation (HQ)' in hdr else hdr for hdr in self.hdrs_data]
@@ -137,11 +150,13 @@ class SatelliteScraper:
         extracted_data = []
         cnt = 0
         for hdr in self.headers[0]:
+            # Si tenemos cabeceras coincidentes, añadimos los datos correspondientes por posición (índice)
             if hdr in self.hdrs_data:
                 ind = self.hdrs_data.index(hdr)
                 extracted_data.append(self.td_data[ind].rstrip().replace('"', ' '))
                 cnt += 1
             else:
+                # Si no son coincidentes, añadimos '?' como contenido
                 extracted_data.append('?')
         extracted_data.append(self.get_nanosats_images_links(html))
 
@@ -162,6 +177,8 @@ class SatelliteScraper:
 
         print(f"===> {W}Number of nanosats to scrape: {Y}{len(nanosats_number)}/{len(nanosats_names)}{NC}\n\n")
 
+        # En función del valor que hayamos introducido en el CLI, las cabeceras tendran unos valores u otros
+        # como se ha comentado al comienzo del fichero  ==> HEADER_SAT
         html = self.get_html(self.url + f'/sat/{HEADER_SAT[status]}')
         self.headers.append(self.get_headers(html))
 
@@ -171,6 +188,7 @@ class SatelliteScraper:
             html = self.get_html(self.url + '/sat' + name)
             #time.sleep(random.randint(0, 2))
 
+            # Si el valor del flag que pasamos por el CLI es -a/--all, coge las cabeceras del nanosat 'deorbitsail'
             if HEADER_SAT[status] == 'deorbitsail':
                 tqdm.write(f'==> {G}Scraping data{NC} for ' + name + ' nanosatellite...')
                 self.data_scraper_all(html)
