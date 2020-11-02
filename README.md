@@ -1,4 +1,9 @@
 # 🚀 Nanosat Scraper 🚀
+
+<p align="center">
+  <img width="580" height="413" src="https://media.giphy.com/media/NXuqvtn9kp2smltRXc/giphy.gif">
+</p>
+
 ## Práctica 1: Web scraping
 ### Descripción
 Esta práctica ha sido desarrollada para la asignatura *Tipología y ciclo de vida de los datos*,
