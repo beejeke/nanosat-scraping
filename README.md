@@ -1,4 +1,4 @@
-# 🚀 Nanosat Scraper 🚀
+# Nanosat Scraper 🛰
 
 <p align="center">
   <img width="580" height="413" src="https://media.giphy.com/media/NXuqvtn9kp2smltRXc/giphy.gif">
@@ -45,7 +45,6 @@ Además, podemos obtener los datos del número de nanosatélites que queramos.
 
 $ web-scraping scrape -n 75
 $ web-scraping --number 75
-
 ```
 
 O también, en función del estado de la misión que queremos obtener datos, podemos elegir entre ```launched```,
