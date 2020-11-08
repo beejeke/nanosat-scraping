@@ -14,6 +14,9 @@ El objetivo principal de dicha práctica es la aplicación de técnicas de [*web
 usando el lenguaje de programación **Python** para la extracción de datos de un sitio web y generar posteriormente
 un *dataset* con dicha información.
 
+### Legalidad
+El sitio web no contiene un recurso robots.txt, por lo que asumimos permisividad total para el scrapping de sus datos.
+
 ### Uso de la herramienta
 Para poder hacer uso de la herramienta, hay que realizar una serie de pasos.
 *   Creamos un entorno virtual de Python y lo activamos.
