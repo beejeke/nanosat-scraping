@@ -15,7 +15,7 @@ usando el lenguaje de programación **Python** para la extracción de datos de u
 un *dataset* con dicha información.
 
 ### Legalidad
-El sitio web no contiene un recurso robots.txt, por lo que asumimos permisividad total para el scrapping de sus datos.
+El [sitio web](https://www.nanosats.eu/) no contiene un [recurso robots.txt](https://www.nanosats.eu/robots.txt), por lo que asumimos permisividad total para el scrapping de sus datos.
 
 ### Uso de la herramienta
 Para poder hacer uso de la herramienta, hay que realizar una serie de pasos.
