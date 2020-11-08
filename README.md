@@ -15,7 +15,7 @@ usando el lenguaje de programación **Python** para la extracción de datos de u
 un *dataset* con dicha información.
 
 ### Legalidad
-El [sitio web](https://www.nanosats.eu/) no contiene un [recurso robots.txt](https://www.nanosats.eu/robots.txt), por lo que asumimos permisividad total para el scrapping de sus datos.
+El [sitio web](https://www.nanosats.eu/) no contiene un [recurso robots.txt](https://www.nanosats.eu/robots.txt). A continuación se cita al autor y el sitio web, acorde a las especificaciones de los términos y condiciones de uso: "Erik Kulu, Nanosats Database, www.nanostar.eu"
 
 ### Uso de la herramienta
 Para poder hacer uso de la herramienta, hay que realizar una serie de pasos.
